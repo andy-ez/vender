@@ -1,8 +1,7 @@
 module VendingMachineParts
   # container for the actual products sold by the vending machine
   class ProductContainer
-    attr_accessor :products, :prices
-    MAX_SIZE = 80 #limit on products container can hold
+    attr_accessor :products, :prices, :max_size
     DEFAULT_PRODUCTS = {
       'Snickers' => 110,
       'Mars' => 90,
@@ -14,8 +13,9 @@ module VendingMachineParts
       'Gum' => 40
     }.freeze
 
-    def initialize
-      set_default_container
+    def initialize(max_size = 80)
+      @max_size= max_size || 80
+      @products = default_container
       @prices = DEFAULT_PRODUCTS.dup
     end
 
@@ -38,7 +38,7 @@ module VendingMachineParts
     end
 
     def restock
-      set_default_container
+      self.products = default_container
     end
 
     def total_quantity
@@ -49,6 +49,15 @@ module VendingMachineParts
 
     def available_products
       products.select { |_, quantity| quantity > 0 }
+    end
+
+    def empty!
+      self.products = products.each { |key, _| products[key] = 0 }
+    end
+
+    def product_from_name(name)
+      price = prices[name]
+      Components::Product.new(name, price) if price
     end
 
     private
@@ -69,7 +78,7 @@ module VendingMachineParts
     end
 
     def capacity_for_quantity?(quantity)
-      total_quantity <= MAX_SIZE - quantity
+      total_quantity <= max_size - quantity
     end
 
     def available_quantity?(product, quantity)
@@ -99,9 +108,9 @@ module VendingMachineParts
       end
     end
 
-    def set_default_container
-      @products = DEFAULT_PRODUCTS.each_with_object({}) do |(prod, price), hash|
-        hash[prod] = 10
+    def default_container
+      DEFAULT_PRODUCTS.each_with_object({}) do |(prod, price), hash|
+        hash[prod] = max_size / DEFAULT_PRODUCTS.length
       end
     end
   end

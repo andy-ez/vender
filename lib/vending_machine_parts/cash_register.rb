@@ -2,12 +2,14 @@ module VendingMachineParts
   # Container for all the coins & their quantities in the vending machine
   # grouped by denomination
   # Assumes unbounded space for storing coins
+  # Also keeps track of coins inserted to purchase a product, keeping it
+  # as a separate collection to the coins available for change.
   class CashRegister
     extend Forwardable
     attr_reader :coins, :money_paid
     def_delegators :@coins, :add_coins, :remove_coins, :total_value, :empty?, :clear!
-    def initialize
-      @coins = Components::CoinCollection.new
+    def initialize(coins = {})
+      @coins = Components::CoinCollection.new(coins)
       @money_paid = Components::CoinCollection.new
     end
 

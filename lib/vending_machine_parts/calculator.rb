@@ -1,5 +1,7 @@
 module VendingMachineParts
-  # Encapsulation of calculations and logic for the machine
+  # Encapsulation of calculations and logic for the machine.
+  # Stores the current selection, amount of change due and
+  # the and the current state of operation.
   class Calculator
     attr_reader :selection, :status, :change, :cash_register, :products
     private :cash_register, :products
@@ -19,7 +21,7 @@ module VendingMachineParts
       else
         calculate_change(shortfall * -1)
       end
-      status == :success
+      [:success, :in_progress].include?(status)
     end
 
     # Returns product and sets the selection if idle and is passed
@@ -53,25 +55,37 @@ module VendingMachineParts
     private
 
     # recurssive check for available change
-    def calculate_change(amount)
+    def calculate_change(amount, coin_array = nil)
       # ignore coins higher than the target amount
-      avail_coins = cash_register.available_coins.select { |coin| coin.value <= amount }
-      unless avail_coins.any?
-        return @status = :no_change
-      end
-      # @change ||= Components::CoinCollection.new
+      @status = :no_change
+      avail_coins = get_available_coins(coin_array, amount)
+      return status unless avail_coins.any?
       required_quantity = amount / avail_coins[0].value
+      return status unless coins_are_available(avail_coins, required_quantity)
+      residual = amount % avail_coins[0].value
+      return @status = :success if residual.zero?
+      calculate_change(residual, avail_coins[1..-1])
+    end
+
+    def get_available_coins(coin_array, amount)
+      if coin_array
+        coin_array
+      else
+        cash_register.available_coins.select { |coin| coin.value <= amount }
+      end
+    end
+
+    # checks if the coins are available and if so adds it to
+    # the change due back. Else it resets change due and
+    # calls calculate_change with an empty array to return
+    # correct status
+    def coins_are_available(avail_coins, required_quantity)
       if cash_register.coins[avail_coins[0].name] >= required_quantity
-        @change.add_coins(avail_coins[0].name, required_quantity)
+        change.add_coins(avail_coins[0].name, required_quantity)
       else
         reset_change
-        return @status = :no_change
+        false
       end
-      residual = amount % avail_coins[0].value
-      if residual.zero?
-        return @status = :success 
-      end
-      calculate_change(residual)
     end
 
     def can_select_product?(product_name)
@@ -83,8 +97,7 @@ module VendingMachineParts
     end
 
     def product_from_name(name)
-      price = products.prices[name]
-      Components::Product.new(name, price) if price
+      products.product_from_name(name)
     end
 
     def get_selection_error(name)
@@ -97,10 +110,6 @@ module VendingMachineParts
 
     def reset_change
       @change = Components::CoinCollection.new
-    end
-
-    def cash_register
-      @cash_register
     end
   end
 end

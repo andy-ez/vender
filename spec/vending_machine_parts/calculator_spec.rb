@@ -117,7 +117,7 @@ RSpec.describe VendingMachineParts::Calculator do
         end
 
         it 'should return true' do
-          expect(calculator.process_transaction).to be false
+          expect(calculator.process_transaction).to be true
         end
       end
 

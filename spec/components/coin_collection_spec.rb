@@ -11,11 +11,28 @@ RSpec.describe Components::CoinCollection do
       '£2' => 0
     }
   end
+  let(:initial_coins) { { '2p' => 10, '£2' => 5 } }
+  let(:initial_coins_with_invalid) { { '2p' => 10, '£2' => 5, '3p' => 10 } }
   let(:new_coins) { described_class.new }
 
   describe '#initialize' do
-    it 'creates a new coin collection with public coins ivar set to a hash with quantities for coins' do
-      expect(new_coins.coins).to eq(empty_collection)
+    context 'with no argument' do
+      it 'creates a new empty coin collection with public coins ivar set' do
+        expect(new_coins.coins).to eq(empty_collection)
+      end
+    end
+
+    context 'with initial coins hash passed' do
+      it 'creates a new empty coin collection with public coins ivar set' do
+        new_collection = described_class.new(initial_coins)
+        expect(new_collection.coins).to eq(empty_collection.merge(initial_coins))
+      end
+
+      it 'ignores invalid coin name keys' do
+        valid_hash = { '2p' => 10, '£2' => 5 }
+        new_collection = described_class.new(initial_coins_with_invalid)
+        expect(new_collection.coins).to eq(empty_collection.merge(valid_hash))
+      end
     end
   end
 

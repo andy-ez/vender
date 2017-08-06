@@ -17,6 +17,15 @@ RSpec.describe VendingMachineParts::ProductContainer do
     it 'creates a new container with public products ivar set to a full container' do
       expect(new_container.products).to eq(full_container)
     end
+
+    it 'sets the max size to a default of 80' do
+      expect(new_container.max_size).to eq(80)
+    end
+
+    it 'sets the max size to argument if present' do
+      big_container = described_class.new(250)
+      expect(big_container.max_size).to eq(250)
+    end
   end
 
   describe '#remove_product' do
@@ -130,5 +139,10 @@ RSpec.describe VendingMachineParts::ProductContainer do
       new_container.remove_product('Twix', 10)
       expect(new_container.available_products).to eq(available)
     end
+  end
+
+  it 'can be emptied' do
+    new_container.empty!
+    expect(new_container.products.values).to eq([0] * 8)
   end
 end

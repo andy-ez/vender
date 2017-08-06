@@ -6,8 +6,8 @@ module Components
     def_delegators :@coins, :[], :[]=, :each, :keys, :values, :select
     class InsufficientCoinsError < StandardError; end
 
-    def initialize
-      set_empty_collection
+    def initialize(coins_hash = {})
+      @coins = coin_hash(coins_hash)
     end
 
     def +(other)
@@ -55,7 +55,7 @@ module Components
     end
 
     def clear!
-      set_empty_collection
+      self.coins = empty_coin_hash
     end
 
     private
@@ -77,10 +77,14 @@ module Components
       raise(ArgumentError, 'Quantity must be a positive number')
     end
 
-    def set_empty_collection
-      @coins = Components::Coin::ACCEPTED_COINS.each_with_object({}) do |coin_name, hash|
-        hash[coin_name] = 0
+    def coin_hash(coins_hash = {})
+      Components::Coin::ACCEPTED_COINS.each_with_object({}) do |coin_name, hash|
+        hash[coin_name] = coins_hash[coin_name] || 0
       end
+    end
+
+    def empty_coin_hash
+      coin_hash
     end
   end
 end
