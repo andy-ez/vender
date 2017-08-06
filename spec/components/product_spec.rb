@@ -1,5 +1,3 @@
-require_relative '../../lib/components/product'
-
 RSpec.describe Components::Product do
   context 'initialized with a valid price' do
     it 'has a public name instance variable set' do

@@ -1,6 +1,4 @@
-require_relative '../../lib/vending_machine/product_container'
-
-RSpec.describe VendingMachine::ProductContainer do
+RSpec.describe VendingMachineParts::ProductContainer do
   let(:new_container) { described_class.new }
   let(:full_container) do
     {
@@ -40,6 +38,11 @@ RSpec.describe VendingMachine::ProductContainer do
           new_container.remove_product('Snickers', 8)
           expect(new_container['Snickers']).to eq(2)
         end
+
+        it 'returns the name of the product removed' do
+          expect(new_container.remove_product('Snickers', 8))
+            .to eq('Snickers')
+        end
       end
 
       context 'when there is not enough of the product' do
@@ -78,6 +81,12 @@ RSpec.describe VendingMachine::ProductContainer do
           new_container.add_product('Snickers', 7)
           expect(new_container['Snickers']).to eq(17)
         end
+
+        it 'returns the name of the product added' do
+          new_container.remove_product('Twix', 8)
+          expect(new_container.add_product('Snickers', 8))
+            .to eq('Snickers')
+        end
       end
 
       context 'when adding a non default product' do
@@ -102,6 +111,24 @@ RSpec.describe VendingMachine::ProductContainer do
   describe '#total_quantity' do
     it 'returns the total count of all products' do
       expect(new_container.total_quantity).to eq(80)
+    end
+  end
+
+  describe '#available_products' do
+    let(:available) do
+      {
+        'Crisps' => 10,
+        'Fanta' => 10,
+        'Coke' => 10,
+        'Sprite' => 10,
+        'Gum' => 10
+      }
+    end
+    it 'returns products with quantities greater than 0' do
+      new_container.remove_product('Snickers', 10)
+      new_container.remove_product('Mars', 10)
+      new_container.remove_product('Twix', 10)
+      expect(new_container.available_products).to eq(available)
     end
   end
 end

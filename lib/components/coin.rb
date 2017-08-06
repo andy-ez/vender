@@ -1,5 +1,3 @@
-require 'set'
-
 module Components
   # This represents a coin with a given face and monetary value (in pence).
   # Can only be initialized with the list of valid coins.

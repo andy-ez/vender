@@ -1,5 +1,3 @@
-require_relative '../../lib/components/coin'
-
 RSpec.describe Components::Coin do
   context 'initialized with a valid amount' do
     it 'has a public name instance variable set' do

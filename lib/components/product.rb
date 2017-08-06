@@ -1,5 +1,3 @@
-require 'set'
-
 module Components
   # This represents a product with a given name and monetary value (in pence).
   class Product
@@ -18,11 +16,11 @@ module Components
     private
 
     def handle_invalid_price
-      raise ArgumentError, "Price must be an integer greater than 0" unless valid_price?
+      raise ArgumentError, 'Price must be an integer greater than 0' unless valid_price?
     end
 
     def valid_price?
-      value.is_a?(Fixnum) && value > 0
+      value.is_a?(Integer) && value > 0
     end
   end
 end

@@ -1,6 +1,4 @@
-require_relative '../components/product'
-
-module VendingMachine
+module VendingMachineParts
   # container for the actual products sold by the vending machine
   class ProductContainer
     attr_accessor :products, :prices
@@ -25,15 +23,17 @@ module VendingMachine
       products[name]
     end
 
-    def add_product(product, quantity)
+    def add_product(product, quantity=1)
       if can_add_product?(product, quantity)
         products[product.to_s] += quantity
+        product.to_s
       end
     end
 
-    def remove_product(product, quantity)
+    def remove_product(product, quantity=1)
       if can_remove_product?(product, quantity)
         products[product.to_s] -= quantity
+        product.to_s
       end
     end
 
@@ -45,6 +45,10 @@ module VendingMachine
       products.reduce(0) do |sum, (product, quantity)|
         sum + quantity
       end
+    end
+
+    def available_products
+      products.select { |_, quantity| quantity > 0 }
     end
 
     private

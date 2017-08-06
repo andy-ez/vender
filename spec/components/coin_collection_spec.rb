@@ -1,5 +1,3 @@
-require_relative '../../lib/components/coin_collection'
-
 RSpec.describe Components::CoinCollection do
   let(:empty_collection) do
     {

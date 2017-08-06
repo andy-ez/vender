@@ -1,16 +1,31 @@
-require_relative 'coin'
-require 'forwardable'
-
 module Components
   # Collection class for coins
   class CoinCollection
     extend Forwardable
     attr_accessor :coins
-    def_delegators :@coins, :[], :[]=
+    def_delegators :@coins, :[], :[]=, :each, :keys, :values, :select
     class InsufficientCoinsError < StandardError; end
 
     def initialize
       set_empty_collection
+    end
+
+    def +(other)
+      result = CoinCollection.new
+      result.coins = coins.merge(other.coins) do |key, value|
+        value + other.coins[key]
+      end
+      result
+    end
+
+    def -(other)
+      new_collection = CoinCollection.new
+      new_collection.coins = coins.merge(other.coins) do |key, value|
+        result = value - other.coins[key]
+        raise InsufficientCoinsError, 'Not enough coins to do that.' if result < 0
+        result
+      end
+      new_collection
     end
 
     def add_coins(coin_name, quantity)
