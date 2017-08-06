@@ -88,10 +88,8 @@ RSpec.describe VendingMachineParts::Calculator do
 
       context 'when an exact amount is inserted' do
         before do
-          products.remove_product('Snickers', 5)
-          products.add_product(Components::Product.new('New Prod', 100), 5)
           register.add_payment('£1')
-          calculator.set_product('New Prod')
+          calculator.set_product('Twix')
         end
         it 'should set the status to success' do
           calculator.process_transaction
@@ -105,10 +103,8 @@ RSpec.describe VendingMachineParts::Calculator do
 
       context 'when too little is inserted' do
         before do
-          products.remove_product('Snickers', 5)
-          products.add_product(Components::Product.new('New Prod', 110), 5)
-          register.add_payment('£1')
-          calculator.set_product('New Prod')
+          register.add_payment('50p')
+          calculator.set_product('Twix')
         end
 
         it 'should set the status to in progress' do
@@ -127,7 +123,7 @@ RSpec.describe VendingMachineParts::Calculator do
             register.add_coins('20p', 1)
             register.add_coins('5p', 1)
             products.remove_product('Snickers', 5)
-            products.add_product(Components::Product.new('New Prod', 70), 5)
+            products.add_product({name: 'New Prod', price: 70}, 5)
             register.add_payment('£1')
             calculator.set_product('New Prod')
           end
@@ -150,7 +146,7 @@ RSpec.describe VendingMachineParts::Calculator do
           before do
             register.fill_register
             products.remove_product('Snickers', 5)
-            products.add_product(Components::Product.new('New Prod', 70), 5)
+            products.add_product({name: 'New Prod', price: 70}, 5)
             register.add_payment('£1')
             calculator.set_product('New Prod')
           end

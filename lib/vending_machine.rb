@@ -33,7 +33,8 @@ class VendingMachine
 
   def make_selection(product_name)
     result = calculator.set_product(product_name)
-    display.write_message(result.to_s)
+    return display.write_message(result) if result.is_a? String
+    display.selected_product(result)
   end
 
   def make_payment(coin, quantity=1)

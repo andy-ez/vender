@@ -48,7 +48,7 @@ RSpec.describe VendingMachine do
 
     it 'can add a new product' do
       vending_machine.remove_product('Snickers', 10)
-      vending_machine.add_product(Components::Product.new('New Chocolate', 190), 10)
+      vending_machine.add_product({name: 'New Chocolate', price: 190}, 10)
       expect(vending_machine.available_products['New Chocolate']).to eq 10
     end
   end
@@ -79,7 +79,8 @@ RSpec.describe VendingMachine do
 
       it 'should output the name of the selection' do
         machine = described_class.new
-        expect(STDOUT).to receive(:puts).with 'Snickers'
+        msg = 'Selected Snickers. Please insert at least £1.10.'
+        expect(STDOUT).to receive(:puts).with msg
         machine.make_selection 'Snickers'
       end
     end

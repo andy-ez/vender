@@ -25,8 +25,9 @@ module VendingMachineParts
 
     def add_product(product, quantity=1)
       if can_add_product?(product, quantity)
-        products[product.to_s] += quantity
-        product.to_s
+        name = product.is_a?(Hash) ? product[:name] : product
+        products[name] += quantity
+        name
       end
     end
 
@@ -100,9 +101,10 @@ module VendingMachineParts
     def handle_missing_product(product)
       if product.is_a?(String)
         raise(ArgumentError, "Product Name: #{product} is not recognised") unless valid_product?(product)
-      elsif product.is_a? Components::Product
-        prices[product.name] = product.value
-        products[product.name] = 0
+      elsif product.is_a? Hash
+        new_product = Components::Product.new(product[:name], product[:price])
+        prices[new_product.name] = new_product.value
+        products[new_product.name] = 0
       else
         raise(ArgumentError, "Invalid product")
       end

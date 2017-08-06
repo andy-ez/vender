@@ -101,10 +101,7 @@ RSpec.describe VendingMachineParts::ProductContainer do
       context 'when adding a non default product' do
         before do
           new_container.remove_product('Twix', 10)
-          new_container.add_product(
-            Components::Product.new('New Chocolate', 119), 
-            7
-          )
+          new_container.add_product({name: 'New Chocolate', price: 119}, 7)
         end
         it 'adds the quantity of the product' do
           expect(new_container['New Chocolate']).to eq(7)
