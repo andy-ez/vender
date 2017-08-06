@@ -1,4 +1,4 @@
-= Simple Vending Machine
+# Simple Vending Machine
 Basic Vending Machine Simulator that allows for the following key features:
   - Once an item is selected and the appropriate amount of money is inserted, the vending machine should return the correct product.
   - Returns change if too much money is provided, or prompts for more money if insufficient funds have been inserted.
@@ -9,7 +9,7 @@ Basic Vending Machine Simulator that allows for the following key features:
   - Setting a limit on product capacity
   - Keeps track of available change and available products
 
-== Installation
+## Installation
 
 * Download the project folder then in a terminal session navigate to the project's directory and run:
 
@@ -17,12 +17,12 @@ Basic Vending Machine Simulator that allows for the following key features:
 
   Note this application will require a working Ruby installation (>1.9.3).
 
-== Testing
+## Testing
 * Tests can be run by running the command:
 
     rspec
 
-== Usage
+## Usage
 
 * Application can be run in an IRB session from the command line by typing:
 
@@ -32,7 +32,7 @@ Basic Vending Machine Simulator that allows for the following key features:
 
     irb -r './lib/vending_machine.rb'
 
-=== Example Usage
+### Example Usage
 In the IRB session try out the following:
 
 ### Create a new machine
