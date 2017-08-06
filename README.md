@@ -12,24 +12,18 @@ Basic Vending Machine Simulator with the following key features:
 ## Installation
 
 * Download the project folder then in a terminal session navigate to the project's directory and run:
-
     `bundle install`
-
   Note this application will require a working Ruby installation (>1.9.3).
 
 ## Testing
-* Tests can be run by running the command:
-
+Tests can be run by running the command:
     `rspec`
 
 ## Usage
 
-* Application can be run in an IRB session from the command line by typing:
-
+Application can be run in an IRB session from the command line by typing:
     `./run`
-
-* Or alternatively:
-
+Or alternatively:
     `irb -r './lib/vending_machine.rb'`
 
 ### Example Usage
