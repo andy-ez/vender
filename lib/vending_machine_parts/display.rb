@@ -1,4 +1,5 @@
 module VendingMachineParts
+  # Encapsulation of display duties
   class Display
     attr_reader :message
     def initialize(calculator)

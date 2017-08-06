@@ -1,12 +1,12 @@
 require 'set'
 require 'forwardable'
-require_relative 'components/coin'
-require_relative 'components/product'
-require_relative 'components/coin_collection'
-require_relative 'vending_machine_parts/calculator'
-require_relative 'vending_machine_parts/cash_register'
-require_relative 'vending_machine_parts/product_container'
-require_relative 'vending_machine_parts/display'
+require 'components/coin'
+require 'components/product'
+require 'components/coin_collection'
+require 'vending_machine_parts/calculator'
+require 'vending_machine_parts/cash_register'
+require 'vending_machine_parts/product_container'
+require 'vending_machine_parts/display'
 
 # Main Vending Machine class made up of the various components
 class VendingMachine
