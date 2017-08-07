@@ -44,7 +44,7 @@ class VendingMachine
   end
 
   def read_display
-    puts display.message
+    display.show_last
   end
 
   def_delegators :@product_container, :add_product, :remove_product, :restock,
@@ -59,7 +59,7 @@ class VendingMachine
   # returns the coin collection representing change
   def_delegator :@cash_register, :coins, :available_change
   private :cash_register, :product_container, :calculator, :status, :reset,
-          :pay_out_change, :change, :set_product
+          :pay_out_change, :change, :set_product, :display
 
   private
 

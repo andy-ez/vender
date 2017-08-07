@@ -1,21 +1,25 @@
 module VendingMachineParts
   # Encapsulation of display duties
   class Display
-    attr_reader :message
+    attr_reader :message, :calculator
     def initialize(calculator)
       @calculator = calculator
       welcome
+    end
+
+    def show_last
+      puts message
     end
 
     def success
     @message = "Successfully bought: #{calculator.selection}.\n"\
     "Paid: #{display_price(calculator.money_paid.total_value)}.\n"\
     "Change: #{display_price(change)}"
-    puts @message
+    puts message
     end
 
     def write_message(msg)
-      puts @msg = msg
+      puts @message = msg
     end
 
     def in_progress
@@ -38,10 +42,6 @@ module VendingMachineParts
       puts @message = "Paid In: #{display_price(calculator.money_paid.total_value)}"
     end
 
-    def selection
-      puts 
-    end
-
     def out_of_stock(product_name)
       puts @message = "#{product_name} is currently out of stock."
     end
@@ -58,10 +58,6 @@ module VendingMachineParts
 
     def change
       calculator.change ? calculator.change.total_value : 0
-    end
-
-    def calculator
-      @calculator
     end
 
     def display_price(price)
