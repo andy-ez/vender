@@ -30,11 +30,41 @@ Or alternatively:
 In the IRB session try out the following:
 
 ### Create a new machine
-All functionality is centered on the VendingMachine class which can be instantiated as below:
+Functionality is centered around the VendingMachine class which can be instantiated as below:
 ```ruby
-# create a Venidng Machine loaded with default products and change 
+# create a Venidng Machine loaded with default products and default change 
 shop = VendingMachine.new
 
+# the initialize method takes an optional options hash as an argument to customise the machine
+# valid keys (as symbols) are:
+# :coins - to pass in a default quantity of each coin as a hash
+# :max_size - maximum number of products the machine can hold
+# :products - an array of hashes with product names, prices and quantities
+# e.g
+shop = VendingMachine.new(
+  max_size: 250,
+  coins: { '£1' => 35, '5p' => 200 },
+  products: [
+    {
+      name: 'Custom Prod',
+      price: 210,
+      quantity: 82
+    },
+    {
+      name: 'Custom Prod 2',
+      price: 190
+    },
+    {
+      name: 'Custom Prod 3',
+      price: 2210,
+      quantity: 17
+    }
+  ]
+)
+# Above initializes a vending machine with
+# 35 £1 coins & 200 5p coins
+# A max capacity of 250 products
+# 82 of Custom Prod, 1 of Custom Prod 2, 17 of Custom Prod 3
 ```
 
 ### Product Managment
@@ -49,7 +79,7 @@ Once you have a vending machine instance you can retrieve the products it has av
   shop.add_product('Snickers')
   # adds a custom new product with a price of £2.10 (input price in pence)
   shop.add_product({name: 'My Custom Product', price: 210})
-  # refills products
+  # refills products with default stack
   shop.restock
   # clears all products
   shop.empty!

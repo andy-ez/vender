@@ -13,10 +13,14 @@ module VendingMachineParts
       'Gum' => 40
     }.freeze
 
-    def initialize(max_size = 80)
+    def initialize(max_size = 80, products_array=nil)
       @max_size= max_size || 80
       @products = default_container
       @prices = DEFAULT_PRODUCTS.dup
+      if products_array
+        empty!
+        products_array.each { |prod_hash| add_product(prod_hash, prod_hash[:quantity] || 1) }
+      end
     end
 
     def [](name)

@@ -17,7 +17,7 @@ class VendingMachine
     coins = options[:coins] || {}
     @cash_register = VendingMachineParts::CashRegister.new(coins)
     load_change unless options[:coins]
-    @product_container = VendingMachineParts::ProductContainer.new(options[:max_size])
+    @product_container = VendingMachineParts::ProductContainer.new(options[:max_size], options[:products])
     @calculator = VendingMachineParts::Calculator.new(@cash_register, @product_container)
     @display = VendingMachineParts::Display.new(@calculator)
   end

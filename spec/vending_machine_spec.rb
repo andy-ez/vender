@@ -16,23 +16,52 @@ RSpec.describe VendingMachine do
   end
 
   context 'custom initialization settings' do
-    let(:machine) do 
-      described_class.new(
+    let(:options1) do
+      {
         coins: { '£1' => 20, '1p' => 50 },
         max_size: 200
-      )
+      }
     end
+    let(:options2) do
+      {
+        coins: { '£1' => 20, '1p' => 50 },
+        max_size: 200,
+        products: [
+          {
+            name: 'Custom Prod',
+            price: 210,
+            quantity: 82
+          },
+          {
+            name: 'Custom Prod 2',
+            price: 190
+          },
+          {
+            name: 'Custom Prod 3',
+            price: 2210,
+            quantity: 17
+          }
+        ]
+      }
+    end
+    let(:machine1) { described_class.new options1 }
+    let(:machine2) { described_class.new options2 }
     it 'can accept an initial load of coins' do
-      expect(machine.available_change)
+      expect(machine1.available_change)
         .to eq(Components::CoinCollection.new('£1' => 20, '1p' => 50))
     end
 
     it 'does not loads available chnage to default' do
-      expect(machine.available_change['2p']).to eq(0)
+      expect(machine1.available_change['2p']).to eq(0)
     end
 
     it 'can set the max_size on container' do
-      expect(machine.max_size).to eq 200
+      expect(machine1.max_size).to eq 200
+    end
+
+    it 'can load a custom product catalogue' do
+      expect(machine2.available_products)
+        .to eq({'Custom Prod' => 82, 'Custom Prod 2' => 1, 'Custom Prod 3' => 17})
     end
   end
 

@@ -9,6 +9,12 @@ RSpec.describe Components::Product do
     end
   end
 
+  context 'with no name' do
+    it 'raises an arguement error' do
+      expect { described_class.new('    ', 210) }.to raise_error(ArgumentError)
+    end
+  end
+
   context 'initialized with an invalid price' do
     it 'raises an arguement error' do
       expect { described_class.new('Snickers', -21) }.to raise_error(ArgumentError)
